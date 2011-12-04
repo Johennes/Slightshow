@@ -6,8 +6,11 @@
 ## Copyright 2011 Johannes Marbach. All rights reserved.
 ## See the LICENSE file for details.
 
-import getopt, sys
+import getopt, os, sys
 from threading import Thread
+from random import choice
+
+from Util import roundrobin
 
 # Try to import frontends
 frontends = []
@@ -34,7 +37,7 @@ Frontend errors: %s''' % ', '.join(frontend_errors)
             exit(1)
         
         # Initialize default settings
-        settings = {
+        self.settings = {
             'recursive': False,
             'delay': 2000,
             'shuffle': False,
@@ -44,7 +47,7 @@ Frontend errors: %s''' % ', '.join(frontend_errors)
         
         # Parse CLI arguments
         try:
-            opts, args = getopt.getopt(sys.argv[1:], 'hrd:slf:',
+            opts, self.args = getopt.getopt(sys.argv[1:], 'hrd:slf:',
                 ['help', 'recursive', 'delay=', 'shuffle', 'loop',
                  'frontend='])
         except getopt.GetoptError, err:
@@ -56,22 +59,22 @@ Frontend errors: %s''' % ', '.join(frontend_errors)
                 self.print_usage()
                 sys.exit(0)
             elif opt in ('-r', '--recursive'):
-                settings['recursive'] = True
+                self.settings['recursive'] = True
             elif opt in ('-d', '--delay'):
                 try:
-                    settings['delay'] = int(arg)
+                    self.settings['delay'] = int(arg)
                 except ValueError, err:
                     self.print_usage('Non-numeric argument to option %s.'
                         % opt)
                     sys.exit(1)
             elif opt in ('-s', '--shuffle'):
-                settings['shuffle'] = True
+                self.settings['shuffle'] = True
             elif opt in ('-l', '--loop'):
-                settings['loop'] = True
+                self.settings['loop'] = True
             elif opt in ('-f', '--frontend'):
                 try:
                     idx = [f.name for f in frontends].index(arg)
-                    settings['frontend'] = frontends[idx]
+                    self.settings['frontend'] = frontends[idx]
                 except ValueError:
                     self.print_usage('No frontend named %s available.' % arg)
                     exit(1)
@@ -79,8 +82,12 @@ Frontend errors: %s''' % ', '.join(frontend_errors)
                 self.print_usage('Unhandled option.')
                 sys.exit(1)
         
+        if not self.args:
+            self.print_usage('No file arguments supplied.')
+            sys.exit(1)
+        
         # Load frontend & supported file extensions
-        self.frontend = settings['frontend']()
+        self.frontend = self.settings['frontend']()
         self.extensions = self.frontend.supported_file_extensions()
         
         # Start slightshow iteration in background thread
@@ -96,6 +103,28 @@ Frontend errors: %s''' % ', '.join(frontend_errors)
     def do_slightshow(self):
         """Iterate through the collection of specified images and directories
         and display every image supported by the selected frontend."""
+        
+        # Build list of supported files from supplied arguments
+        files = []
+        while self.args:
+            # Pop next item
+            item = self.args.pop()
+            
+            # Handle directories
+            if os.path.isdir(item):
+                if self.settings['recursive']:
+                    for dirpath, _, filenames in os.walk(item):
+                        for filename in filenames:
+                            self.args.append(os.path.join(dirpath, filename))
+                    continue
+            
+            # Handle files
+            if os.path.isfile(item):
+                _, ext = os.path.splitext(item)
+                if ext[1:].lower() in self.extensions:
+                    files.append(item)
+        
+        print files
         
         self.frontend.stop()
     
