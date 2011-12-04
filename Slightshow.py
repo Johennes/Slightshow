@@ -7,6 +7,7 @@
 ## See the LICENSE file for details.
 
 import getopt, sys
+from threading import Thread
 
 # Try to import frontends
 frontends = []
@@ -79,8 +80,24 @@ Frontend errors: %s''' % ', '.join(frontend_errors)
                 sys.exit(1)
         
         # Load frontend & supported file extensions
-        frontend = settings['frontend']()
-        extensions = frontend.supported_file_extensions()
+        self.frontend = settings['frontend']()
+        self.extensions = self.frontend.supported_file_extensions()
+        
+        # Start slightshow iteration in background thread
+        slightshow_thread = Thread(target = self.do_slightshow)
+        slightshow_thread.start()
+        
+        # Run frontend in main thread
+        self.frontend.run()
+        
+        # Wait for slightshow thread to terminate
+        slightshow_thread.join()
+    
+    def do_slightshow(self):
+        """Iterate through the collection of specified images and directories
+        and display every image supported by the selected frontend."""
+        
+        self.frontend.stop()
     
     def print_usage(self, error = None):
         """Print usage information to STDOUT and display an optional error

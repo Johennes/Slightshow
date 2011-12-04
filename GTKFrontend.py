@@ -6,7 +6,9 @@
 
 from Frontend import Frontend
 from Util import roundrobin
-import pygtk, gtk
+import pygtk, gtk, gobject
+
+gobject.threads_init()
 
 class GTKFrontend(Frontend):
     """GTK+ frontend."""
@@ -23,3 +25,13 @@ class GTKFrontend(Frontend):
         
         extensions = [i['extensions'] for i in gtk.gdk.pixbuf_get_formats()]
         return list(roundrobin(*extensions))
+    
+    def run(self):
+        """Run the frontend's main loop."""
+        
+        gtk.main()
+    
+    def stop(self):
+        """Stop the frontend's main loop."""
+        
+        gobject.idle_add(gtk.main_quit)

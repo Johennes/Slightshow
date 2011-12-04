@@ -19,3 +19,13 @@ class Frontend(object):
         """Return a list of supported file extensions."""
         
         return []
+    
+    def run(self):
+        """Run the frontend's main loop, if any."""
+        
+        pass
+    
+    def stop(self):
+        """Stop the frontend's main loop, if any."""
+        
+        pass
