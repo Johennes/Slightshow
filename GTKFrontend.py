@@ -35,3 +35,9 @@ class GTKFrontend(Frontend):
         """Stop the frontend's main loop."""
         
         gobject.idle_add(gtk.main_quit)
+    
+    def display(self, path):
+        """Display the image located at the specified path. Return True on
+        success and False otherwise."""
+        
+        return True

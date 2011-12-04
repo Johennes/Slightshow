@@ -29,3 +29,9 @@ class Frontend(object):
         """Stop the frontend's main loop, if any."""
         
         pass
+    
+    def display(self, path):
+        """Display the image located at the specified path. Return True on
+        success and False otherwise."""
+        
+        return False
