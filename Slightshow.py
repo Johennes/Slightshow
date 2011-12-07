@@ -154,10 +154,9 @@ use the -r switch in order to scan them recursively.\
                     break
             
             # Sleep
-            if stack:
-                delay = self.settings['delay'] - (time() - start)
-                if delay > 0:
-                    sleep(delay)
+            delay = self.settings['delay'] - (time() - start)
+            if delay > 0:
+                sleep(delay)
         
         self.frontend.stop()
     

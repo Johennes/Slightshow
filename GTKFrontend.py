@@ -4,9 +4,11 @@
 ## Copyright 2011 Johannes Marbach. All rights reserved.
 ## See the LICENSE file for details.
 
+import sys
+import pygtk, gtk, gobject
+
 from Frontend import Frontend
 from Util import roundrobin
-import pygtk, gtk, gobject
 
 gobject.threads_init()
 
@@ -18,7 +20,16 @@ class GTKFrontend(Frontend):
     def __init__(self):
         """Constructor."""
         
-        pass
+        # Initialize window
+        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        
+        # Initialize image widget
+        self.image = gtk.Image()
+        self.window.add(self.image)
+        
+        # Show window
+        self.window.fullscreen()
+        self.window.show_all()
     
     def supported_file_extensions(self):
         """Return a list of supported file extensions."""
@@ -40,4 +51,36 @@ class GTKFrontend(Frontend):
         """Display the image located at the specified path. Return True on
         success and False otherwise."""
         
-        return True
+        try:
+            # Load image into pixbuf
+            pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+            
+            # Scale image
+            p_width = pixbuf.get_width()
+            p_height = pixbuf.get_height()
+            w_width, w_height = self.window.get_size()
+            
+            width = 0
+            height = 0
+            
+            if float(p_width) / float(p_height) > \
+               float(w_width) / float(w_height):
+                if p_width > w_width:
+                    width = w_width
+                    height = int(float(w_width) / float(p_width)
+                        * float(p_height))
+            else:
+                if p_height > w_height:
+                    width = int(float(w_height) / float(p_height)
+                        * float(p_width))
+                    height = w_height
+            
+            pixbuf = pixbuf.scale_simple(width, height,
+                gtk.gdk.INTERP_BILINEAR)
+            
+            # Display image
+            gobject.idle_add(self.image.set_from_pixbuf, pixbuf)
+            
+            return True
+        except:
+            return False
