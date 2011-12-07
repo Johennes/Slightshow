@@ -1,0 +1,23 @@
+//////////////////////////////////////////////////////////////////////////////
+// Copyright 2011 Johannes Marbach. All rights reserved.
+// See the LICENSE file for details.
+
+Slightshow
+
+This is a Python application that takes a bunch of images and displays them in
+a fullscreen slideshow. The application is written in a modular way so that
+new frontends can easily be added.
+
+USAGE: slightshow [OPTION...] FILE...
+
+Options:
+  -h, --help            Display this message and exit
+  -r, --recursive       Recursively include directories (default: disabled)
+  -d, --delay MSECS     Delay between subsequent pictures in milliseconds
+                        (default: 2000)
+  -s, --shuffle         Display pictures in random order (default: disabled)
+  -l, --loop            Infinitely repeat the picture sequence
+                        (default: disabled)
+  -f, --frontend NAME   Use the specified graphical frontend (default: gtk)
+                        Available frontends: gtk
+  -q, --quality N       Image scaling quality level (N=0..3, default: 2)
