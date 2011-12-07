@@ -32,6 +32,7 @@ class GTKFrontend(Frontend):
         
         # Initialize window
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.window.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color())
         
         # Initialize image widget
         self.image = gtk.Image()
