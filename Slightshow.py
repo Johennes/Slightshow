@@ -44,14 +44,15 @@ Frontend errors: %s\
             'delay': 2,
             'shuffle': False,
             'loop': False,
-            'frontend': frontends[0]
+            'frontend': frontends[0],
+            'quality': 2
         }
         
         # Parse CLI arguments
         try:
-            opts, args = getopt.getopt(sys.argv[1:], 'hrd:slf:',
+            opts, args = getopt.getopt(sys.argv[1:], 'hrd:slf:q:',
                 ['help', 'recursive', 'delay=', 'shuffle', 'loop',
-                 'frontend='])
+                 'frontend=', 'quality='])
         except getopt.GetoptError, err:
             self.print_usage(str(err))
             sys.exit(1)
@@ -80,6 +81,18 @@ Frontend errors: %s\
                 except ValueError:
                     self.print_usage('No frontend named %s available.' % arg)
                     exit(1)
+            elif opt in ('-q', '--quality'):
+                quality = self.settings['quality']
+                
+                try:
+                    quality = int(arg)
+                    assert quality in range(0,4)
+                except (ValueError, AssertionError), err:
+                    self.print_usage('Non-numeric argument to option %s.'
+                        % opt)
+                    sys.exit(1)
+                
+                self.settings['quality'] = quality
             else:
                 self.print_usage('Unhandled option.')
                 sys.exit(1)
@@ -90,7 +103,7 @@ Frontend errors: %s\
             sys.exit(1)
         
         # Load frontend & supported file extensions
-        self.frontend = self.settings['frontend']()
+        self.frontend = self.settings['frontend'](self.settings['quality'])
         extensions = self.frontend.supported_file_extensions()
         
         # Build list of supported files from supplied arguments
@@ -216,6 +229,10 @@ Options:
   -f, --frontend NAME   Use the specified graphical frontend (default: %s)
                         Available frontends: %s\
 ''' % (frontends[0].name, ', '.join([f.name for f in frontends]))
+        
+        print '''\
+  -q, --quality N       Image scaling quality level (N=0..3, default: %s)\
+''' % self.settings['quality']
     
     def option_enabled_string(self, option):
         """Return a string indicating whether the specified option is

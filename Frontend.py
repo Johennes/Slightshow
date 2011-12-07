@@ -10,7 +10,7 @@ class Frontend(object):
     
     name = 'generic frontend'
     
-    def __init__(self):
+    def __init__(self, quality):
         """Constructor."""
         
         pass

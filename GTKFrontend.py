@@ -17,8 +17,18 @@ class GTKFrontend(Frontend):
     
     name = 'gtk'
     
-    def __init__(self):
+    def __init__(self, quality):
         """Constructor."""
+        
+        # Query quality constant
+        if quality == 0:
+            self.quality = gtk.gdk.INTERP_NEAREST
+        elif quality == 1:
+            self.quality = gtk.gdk.INTERP_TILES
+        elif quality == 2:
+            self.quality = gtk.gdk.INTERP_BILINEAR
+        elif quality == 3:
+            self.quality = gtk.gdk.INTERP_HYPER
         
         # Initialize window
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
@@ -75,8 +85,7 @@ class GTKFrontend(Frontend):
                         * float(p_width))
                     height = w_height
             
-            pixbuf = pixbuf.scale_simple(width, height,
-                gtk.gdk.INTERP_BILINEAR)
+            pixbuf = pixbuf.scale_simple(width, height, self.quality)
             
             # Display image
             gobject.idle_add(self.image.set_from_pixbuf, pixbuf)
