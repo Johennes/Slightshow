@@ -11,7 +11,7 @@ from Frontend import Frontend
 from Util import roundrobin
 
 gobject.threads_init()
-
+COUNT=0
 class GTKFrontend(Frontend):
     """GTK+ frontend."""
     
@@ -75,8 +75,8 @@ class GTKFrontend(Frontend):
             p_height = pixbuf.get_height()
             w_width, w_height = self.window.get_size()
             
-            width = 0
-            height = 0
+            width = p_width
+            height = p_height
             
             if float(p_width) / float(p_height) > \
                float(w_width) / float(w_height):
