@@ -20,6 +20,9 @@ class GTKFrontend(Frontend):
     def __init__(self, quality):
         """Constructor."""
         
+        # Call super constructor
+        super(GTKFrontend, self).__init__(quality)
+        
         # Query quality constant
         if quality == 0:
             self.quality = gtk.gdk.INTERP_NEAREST
@@ -33,6 +36,7 @@ class GTKFrontend(Frontend):
         # Initialize window
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color())
+        self.window.connect('key_press_event', self.on_key_press_event)
         
         # Initialize image widget
         self.image = gtk.Image()
@@ -94,3 +98,9 @@ class GTKFrontend(Frontend):
             return True
         except:
             return False
+    
+    def on_key_press_event(self, widget, event):
+        """Callback to capture key press events."""
+        
+        if gtk.gdk.keyval_name(event.keyval) == 'Escape':
+            self.has_stopped = True

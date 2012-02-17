@@ -157,8 +157,8 @@ use the -r switch in order to scan them recursively.\
         start = 0
         
         # Loop over collection of files
-        while stack:
-            while stack:
+        while stack and not self.frontend.has_stopped:
+            while stack and not self.frontend.has_stopped:
                 # Store starting time
                 start = time()
                 
@@ -169,7 +169,12 @@ use the -r switch in order to scan them recursively.\
             # Sleep
             delay = self.settings['delay'] - (time() - start)
             if delay > 0:
-                sleep(delay)
+                for i in range(0, int(delay / 0.05)):
+                    if not self.frontend.has_stopped:
+                        sleep(0.05)
+                
+                # Remaining time difference won't be noticeable as it lies
+                # beneath 50ms.
         
         self.frontend.stop()
     

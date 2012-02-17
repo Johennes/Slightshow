@@ -13,7 +13,7 @@ class Frontend(object):
     def __init__(self, quality):
         """Constructor."""
         
-        pass
+        self.has_stopped = False
     
     def supported_file_extensions(self):
         """Return a list of supported file extensions."""
