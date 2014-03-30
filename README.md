@@ -1,14 +1,18 @@
-//////////////////////////////////////////////////////////////////////////////
-// Copyright 2011 Johannes Marbach. All rights reserved.
-// See the LICENSE file for details.
-
 Slightshow
+==========
+
+A command-line controlled tool for running randomized picture slideshows
 
 This is a Python application that takes a bunch of images and displays them in
-a fullscreen slideshow. The application is written in a modular way so that
-new frontends can easily be added.
+a fullscreen slideshow. The image paths as well as various configuration options
+can be specified on the command line. Currently the frontend user interface
+relies on PyGTK but the application is written in a modular way so that other
+UI toolkits can easily be integrated.
 
-USAGE: slightshow [OPTION...] FILE...
+### Usage
+
+``` shell
+slightshow [OPTION...] FILE...
 
 Options:
   -h, --help            Display this message and exit
@@ -21,3 +25,4 @@ Options:
   -f, --frontend NAME   Use the specified graphical frontend (default: gtk)
                         Available frontends: gtk
   -q, --quality N       Image scaling quality level (N=0..3, default: 2)
+```
