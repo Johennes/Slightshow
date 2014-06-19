@@ -195,7 +195,7 @@ use the -r switch in order to scan them recursively.\
         
         # Reset stack if in loop mode
         if not stack and self.settings['loop']:
-            stack = self.new_index_stack()
+            stack += self.new_index_stack()
         
         return item
     
