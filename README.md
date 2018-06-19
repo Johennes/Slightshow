@@ -1,6 +1,8 @@
 Slightshow
 ==========
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A command-line controlled tool for running randomized picture slideshows
 
 This is a Python application that takes a bunch of images and displays them in
@@ -11,7 +13,9 @@ UI toolkits can easily be integrated.
 
 ### Usage
 
-``` shell
+To run the tool, execute `src/slightshow`. Available options are summarised below.
+
+```text
 slightshow [OPTION...] FILE...
 
 Options:
