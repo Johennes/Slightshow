@@ -6,4 +6,5 @@
 ## Copyright 2011 Johannes Marbach. All rights reserved.
 ## See the LICENSE file for details.
 
-python2 Slightshow.py "$@"
+dir=$(dirname "$0")
+python2 "${dir}/Slightshow.py" "$@"
