@@ -1,7 +1,7 @@
 Slightshow
 ==========
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+*Mirrors: [GitHub] ~ [GitLab]*
 
 A command-line controlled tool for running randomized picture slideshows
 
@@ -30,3 +30,6 @@ Options:
                         Available frontends: gtk
   -q, --quality N       Image scaling quality level (N=0..3, default: 2)
 ```
+
+[GitHub]: https://github.com/Johennes/Slightshow
+[GitLab]: https://gitlab.com/cherrypicker/Slightshow
