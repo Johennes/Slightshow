@@ -1,8 +1,6 @@
 Slightshow
 ==========
 
-*Mirrors: [GitHub] ~ [GitLab]*
-
 A command-line controlled tool for running randomized picture slideshows
 
 This is a Python application that takes a bunch of images and displays them in
@@ -30,6 +28,3 @@ Options:
                         Available frontends: gtk
   -q, --quality N       Image scaling quality level (N=0..3, default: 2)
 ```
-
-[GitHub]: https://github.com/Johennes/Slightshow
-[GitLab]: https://gitlab.com/cherrypicker/Slightshow
